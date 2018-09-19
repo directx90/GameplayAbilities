@@ -235,6 +235,35 @@
 
 # GameplayEvent
 
+# 参考
+* ## 中文教程
+    >[Unreal Engine 4（虚幻UE4） GameplayAbilities插件入门教程] https://www.cnblogs.com/JackSamuel/tag/GameplayAbility%E6%8F%92%E4%BB%B6/
+
+* ## 视频教程
+    >[Intro to Gameplay Abilities in Unreal Engine 4] https://www.youtube.com/watch?v=Ev2P6BTUxN0
+
+    >[Intro to the Unreal Engine Gameplay Abilities Module - Unreal Sydney Meetup] https://www.youtube.com/watch?v=OyiweL2nPac
+
+    >[Tutorial: Custom Abilities in UE4's Action RPG Game (C++ / Blueprint)] https://www.youtube.com/watch?v=Tu5AJKNe1Ok
+
+* ## 官方文档
+    >[Gameplay Ability System] https://docs.unrealengine.com/Gameplay/GameplayAbilitySystem/GameplayAbilities
+
+* ## 论坛
+    >[GameplayAbilities and You] https://forums.unrealengine.com/community/community-content-tools-and-tutorials/110113-gameplayabilities-and-you
+    
+    >[Comprehensive GameplayAbilities Analysis Series] https://forums.unrealengine.com/community/community-content-tools-and-tutorials/116578-comprehensive-gameplayabilities-analysis-series?143688-Comprehensive-GameplayAbilities-Analysis-Series=
+
+* ## 案例工程
+    >[Action RPG Game] https://docs.unrealengine.com/en-us/Resources/SampleGames/ARPG
+
+    >[MCGameplayAbilities] https://github.com/michaeltchapman/MCGameplayAbilities
+
+    >[Unreal_GameplayAbilities_FirstPerson] https://github.com/DavidENishball/Unreal_GameplayAbilities_FirstPerson
+
+    >[GASContent] https://github.com/Pantong51/GASContent#gas-intro
+
+
 
 
 
