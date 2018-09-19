@@ -111,6 +111,7 @@
                     4.  Backing Attribute : 支持属性
                         1.  Attribute to Capture : 指定的属性，FGameplayAttributeData类型
                         2.  Attribute Source : 属性源。Source和Target  
+                        3.  Snapshot : 是否进行快照。例如火球的伤害是10，当火球发出时就应进行快照，因为释放者的属性可能会在火球飞行的过程中被修改，不能让其影响已经释放了的火球。
                     5.  Attribute Curve : 属性配置。如果制定了配置，就会读取配置里的数值，而不会直接使用属性
                         1.  Curve Table : 配置表
                         2.  Row Name : 行的名字
@@ -136,7 +137,13 @@
         5.  Target Tags : 需要目标遵循的标签规则
     3.  Executions : 自定义的执行代码
         1.  Calculation Class : Gameplay Effect Execution Calculation类，需要实现Execute方法
-        2.  Conditional Gameplay Effects : 如果执行计算成功，将应用额外的效果到目标，如果未指定计算类，将总是应用额外的效果到目标。
+        2.  Calculation Modifiers : 
+            1.  Backing Capture Definition : 
+            2.  Modifiter Op : 
+            3.  Modifier Magnitude : 
+            4.  Source Tags : 
+            5.  Target Tags : 
+        3.  Conditional Gameplay Effects : 如果执行计算成功，将应用额外的效果到目标，如果未指定计算类，将总是应用额外的效果到目标。
             1.  Effect Class : 需要应用的效果
             2.  Required Source Tags : 需要源拥有的标签
 2.  Period : 周期
@@ -174,7 +181,7 @@
     3.  Gameplay Cues : 
         1.  Magnitude Attribute : 指定的属性,如果未指定则使用等级
         2.  Min Level -  Max Level : 用于归一化等级，控制效果有多强
-        4.  Gameplay Cue Tags : 拥有专门的Tag，GameplayCue.XXX.YYY
+        3.  Gameplay Cue Tags : 拥有专门的Tag，GameplayCue.XXX.YYY
     4.  UIData : 通过UI表示数据等，server-only不可用，GameplayEffectUIData类。
 8.  Tags : 标签
     1.  GameplayEffectAssetTag : 效果拥有的标签，并不会应用到Actor上，FInheritedTagContainer类型，
@@ -196,6 +203,7 @@
         1.   Cancel Ability Immediately : 立即取消移除
         2.   Remove Ability on End : 等待技能完成，然后移除
         3.   Do Nothing : 不移除，让其自生自灭
+11. ApplyGameplayEffectToTarget : 通过此Blueprint节点使用效果
 
 
 # GameplayCue
@@ -231,9 +239,40 @@
 6.  GetLifetimeReplicatedProps ： DOREPLIFETIME_CONDITION_NOTIFY将属性设置为网络同步
 7.  ReplicatedUsing : OnRep_XXXAttribute
 8.  InitStats ： 初始化属性，可以关联DataTable
+9.  FGameplayAttribute ：可以通过宏来进行声明和定义
+
+
+# UGameplayEffectExecutionCalculation
+>自定义计算
+1. UGameplayEffectExecutionCalculation : 继承此类
+2. Execute_Implementation ：实现此接口，Blueprint实现Execute方法
+3. DECLARE_ATTRIBUTE_CAPTUREDEF : 声明宏
+4. DEFINE_ATTRIBUTE_CAPTUREDEF ：定义宏
+5. RelevantAttributesToCapture : 将需要属性添加到此列表
+6. InvalidScopedModifierAttributes : 将需要属性添加到此列表
+7. Attributes : 
+    1. Requires Passed in Tags : 是否需要以参数的方式传入标签
+    2. Invalid Scoped Modifier Attributes : 不需要的属性列表，加入此列表里的属性将不会显示在效果界面
+    3. Relevant Attributes to Capture : 需要显示的属性
 
 
 # GameplayEvent
+>用于事件的出发，可以携带参数
+1.  FGameplayTag EventTag ：事件标签
+2.  const AActor* Instigator : 释放者
+3.  const AActor* Target : 目标
+4.  const UObject* OptionalObject : 可携带其他数据
+5.  const UObject* OptionalObject2 : 同上
+6.  FGameplayEffectContextHandle ContextHandle : 效果上下文，包含其他参数
+7.  FGameplayTagContainer InstigatorTags : 触发事件时释放者的标签，因为后面释放者的标签可能会变
+8.  FGameplayTagContainer TargetTags : 同上，目标标签
+9.  float EventMagnitude : 浮点值
+10. FGameplayAbilityTargetDataHandle TargetData : 目标的数据
+11. SendGameplayEventToActor : 出发事件的方法，位于UAbilitySystemBlueprintLibrary
+12. SendGameplayEvent : 位于UGameplayAbility
+
+
+
 
 # 参考
 * ## 中文教程
