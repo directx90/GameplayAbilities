@@ -24,7 +24,7 @@
 10. Owners : 拥有者
 11. Allow non-restricted children : 是否允许添加子节点
 12. Restrictred Tag List : 显示限制的Tag，不能删除，只能通过手动修改配置文件
-13. Gameplay Tag Containers : Tag的数组结构，C++:FGameplayTag,FGameplayTagContainer
+13. Gameplay Tag Container : Tag的数组结构，C++:FGameplayTag,FGameplayTagContainer
 14. Gameplay Tag Operations : 
     1.  Matches Tag
     2.  Matches Any Tags
@@ -56,8 +56,8 @@
     2.  Cancel Abilities with Tag : 激活此技能后，将取消拥有这些标签的技能
     3.  Block Abilities with Tag : 激活此技能后，将阻止拥有这些标签的技能
     4.  Activation Owned Tags : 激活此技能后，将拥有这些附带的标签
-    5.  Activation Required Tags : 激活附带技能时需要依赖的标签
-    6.  Activation Blocked Tags : 阻碍激活附带技能的标签
+    5.  Activation Required Tags : 激活技能时需要的标签
+    6.  Activation Blocked Tags : 阻碍激活技能的标签
     7.  Source Required Tags : 源头拥有这些标签才能激活此技能
     8.  Source Blocked Tags : 源头拥有这些标签将阻碍激活此技能
     9.  Target Required Tags : 目标拥有这些标签才能激活此技能
@@ -80,7 +80,7 @@
 9.  Triggers : 通过某些途径触发标签，
     1.  Trigger Tag : 触发的标签
     2.  Trigger Source : 触发来源的种类
-        1. Gameplay Event : 使用Send Gameplay Event和Send Gameplay Event to Actor节点，可以携带参数
+        1. Gameplay Event : 使用Send Gameplay Event to Actor节点，可以携带参数
         2. Owned Tag Added : 添加标签时触发，先于源标签激活
         3. Owned Tag Present : 添加标签时触发，当标签被移除时，此触发技能也会结束。先于源标签激活。
 10. Cooldowns : CD
@@ -104,27 +104,29 @@
         3.  Has Duration : 持续时间，单位：秒
             1.  Magnitude Calculation Type : 时长计算种类
                 1.  Scalable Float : 可扩展的浮点数。Raw Value : 基础数值；Curve Table : 读取配置表，最终的结果是根据等级读取并相乘
-                2.  Attribute Based : 基于属性，公式: a(x+b)+c
+                2.  Attribute Based : 基于属性，公式: a*(x+b)+c
                     1.  Coefficient : a
                     2.  Pre Multiply Additive Value : b
                     3.  Post Multiply Additive Value : c
                     4.  Backing Attribute : 支持属性
-                        1.  Attribute to Capture : 指定的属性，FGameplayAttributeData类型
+                        1.  Attribute to Capture : 指定的属性，FGameplayAttributeData类型，公式里的x，未指定将变成无限
                         2.  Attribute Source : 属性源。Source和Target  
                         3.  Snapshot : 是否进行快照。例如火球的伤害是10，当火球发出时就应进行快照，因为释放者的属性可能会在火球飞行的过程中被修改，不能让其影响已经释放了的火球。
-                    5.  Attribute Curve : 属性配置。如果制定了配置，就会读取配置里的数值，而不会直接使用属性
+                    5.  Attribute Curve : 属性配置。如果制定了配置，就会读取配置里的数值，公式变成 a*(x*y+b)+c，公式里的y
                         1.  Curve Table : 配置表
                         2.  Row Name : 行的名字
                     6.  Attribute Calculation Type : 属性计算的类型
-                        1.  Attribute Magnitude : 使用评估后的长度
-                        2.  Attribute Base Value : 基础长度
-                        3.  Attribute Bonus Magnitude : 等于 (Attribute Magnitude - Attribute Base Value)
-                    7.  Custom Calculation Class : 自定计算，能够使用Blueprint或C++里的多个属性
-                        1.  Calculation Class : 指定用于计算的类，需要实现CalculateBaseMagnitude方法
-                        2.  Final Lookup Curve : 最终校正。如果制定有效，将会进一步通过CurveTable计算
-                    8.  Set by Caller : 通过调用者设置，如果指定了标签，先通过标签查找，再通过名字查找
-                        1.  Data Name : 通过名字查找 
-                        2.  Data Tag : 通过标签查找
+                        1.  Attribute Magnitude : 使用计算后的结果
+                        2.  Attribute Base Value : 和上面一样 ？
+                        3.  Attribute Bonus Magnitude : x不会用Attribute的值
+                    7.  Source Tag Filter : 不知
+                    8.  Target Tag Filter : 不知
+                3.  Custom Calculation Class : 自定计算，能够使用Blueprint或C++里的多个属性
+                    1.  Calculation Class : 指定用于计算的类，需要实现CalculateBaseMagnitude方法
+                    2.  Final Lookup Curve : 最终校正。如果制定有效，将会进一步通过CurveTable计算
+                4.  Set by Caller : 不知。 通过调用者设置，如果指定了标签，先通过标签查找，再通过名字查找
+                    1.  Data Name : 不知。 通过名字查找 
+                    2.  Data Tag : 不知。 通过标签查找
     2.  Modifiers : 修改器列表
         1.  Attribute : 修改的属性
         2.  Modifier Op : 操作
@@ -133,17 +135,11 @@
             3.  Divide : /
             4.  Override : 覆写
         3.  Modifier Magnitude : 数据的计算， 同Duration Magnitude
-        4.  Source Tags : 需要源遵循的标签规则
-        5.  Target Tags : 需要目标遵循的标签规则
+        4.  Source Tags : 不知。 需要源遵循的标签规则
+        5.  Target Tags : 不知。 需要目标遵循的标签规则
     3.  Executions : 自定义的执行代码
         1.  Calculation Class : Gameplay Effect Execution Calculation类，需要实现Execute方法
-        2.  Calculation Modifiers : 
-            1.  Backing Capture Definition : 
-            2.  Modifiter Op : 
-            3.  Modifier Magnitude : 
-            4.  Source Tags : 
-            5.  Target Tags : 
-        3.  Conditional Gameplay Effects : 如果执行计算成功，将应用额外的效果到目标，如果未指定计算类，将总是应用额外的效果到目标。
+        2.  Conditional Gameplay Effects : 如果执行计算成功，将应用额外的效果到目标，如果未指定计算类，将总是应用额外的效果到目标。
             1.  Effect Class : 需要应用的效果
             2.  Required Source Tags : 需要源拥有的标签
 2.  Period : 周期
@@ -273,12 +269,13 @@
 
 
 
-
 # 参考
 * ## 中文教程
     >[Unreal Engine 4（虚幻UE4） GameplayAbilities插件入门教程] https://www.cnblogs.com/JackSamuel/tag/GameplayAbility%E6%8F%92%E4%BB%B6/
 
 * ## 视频教程
+    >[WTF Is? Gameplay Tags in Unreal Engine 4 ( UE4 )] https://www.youtube.com/watch?v=e2rdXo408Q0
+
     >[Intro to Gameplay Abilities in Unreal Engine 4] https://www.youtube.com/watch?v=Ev2P6BTUxN0
 
     >[Intro to the Unreal Engine Gameplay Abilities Module - Unreal Sydney Meetup] https://www.youtube.com/watch?v=OyiweL2nPac
@@ -286,6 +283,8 @@
     >[Tutorial: Custom Abilities in UE4's Action RPG Game (C++ / Blueprint)] https://www.youtube.com/watch?v=Tu5AJKNe1Ok
 
 * ## 官方文档
+    >[Gameplay Tags] https://docs.unrealengine.com/en-us/Gameplay/Tags
+
     >[Gameplay Ability System] https://docs.unrealengine.com/Gameplay/GameplayAbilitySystem/GameplayAbilities
 
 * ## 论坛
