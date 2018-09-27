@@ -3,11 +3,12 @@
 
 # Character
 >改造Character
-1. IAbilitySystemInterface ： 继承并实现GetAbilitySystemComponent接口
-2. AbilitySystemComponent : 技能组件
-3. GiveAbility : 设定技能
-4. Try Active Abilities by Tag : 通过标签激活技能
-4. Try Active Abilities by Class : 通过类激活技能
+1. 在Build.cs里的PublicDependencyModuleNames添加 "GameplayAbilities","GameplayTags","GameplayTasks"
+2. IAbilitySystemInterface ： 继承并实现GetAbilitySystemComponent接口
+3. AbilitySystemComponent : 技能组件
+4. GiveAbility : 设定技能
+5. Try Active Abilities by Tag : 通过标签激活技能
+6. Try Active Abilities by Class : 通过类激活技能
 
 
 # GameplayTag
@@ -167,7 +168,7 @@
 5.  Overflow : 溢出
     1.  Overflow Effects : 当堆栈溢出时添加的效果，例如：当受到10个冰雪技能后，受到一个冰冻效果
     2.  Deny Overflow Application : 拒绝溢出时应用，为True时表示当堆栈满了时将拒绝继续添加效果，从而导致无法刷新持续时间
-    3.  Clear Stack on Overflow : 当Deny Overflow Application为True时，溢出会进行清空
+    3.  Clear Stack on Overflow : 当Deny Overflow Application为True时才有效。溢出会进行清空
 6.  Expiration : 持续时间到期
     1.  Premature Expiration Effect Classes : 当持续效果被过早终结时使用的效果
     2.  Routine Expiration Effect Classes : 当持续效果自然终结时使用的效果
