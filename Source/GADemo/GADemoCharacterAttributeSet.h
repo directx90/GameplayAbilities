@@ -16,13 +16,15 @@ class GADEMO_API UGADemoCharacterAttributeSet : public UAttributeSet
 
 public:
 	UGADemoCharacterAttributeSet();
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
 		FGameplayAttributeData HP;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FGameplayAttributeData Duration;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
 		FGameplayAttributeData MP;
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 };

@@ -85,17 +85,19 @@ void AGADemoCharacter::BeginPlay()
 	AbilitySystem = Cast<UGADemoAbilitySystemComponent>(GetComponentByClass(UAbilitySystemComponent::StaticClass()));
 	if (AbilitySystem != nullptr)
 	{
-		for (auto Ability : Abilities)
+		if (HasAuthority())
 		{
-			if (Ability != nullptr)
+			for (auto Ability : Abilities)
 			{
-				AbilitySystem->GiveAbility(FGameplayAbilitySpec(Ability, 1, 0));
+				if (Ability != nullptr)
+				{
+					AbilitySystem->GiveAbility(FGameplayAbilitySpec(Ability, 1, 0));
+				}
 			}
-		}
-		for (auto AttributeSet : AttributeSets)
-		{
-			AbilitySystem->InitStats(AttributeSet,nullptr);
-
+			for (auto AttributeSet : AttributeSets)
+			{
+				AbilitySystem->InitStats(AttributeSet, nullptr);
+			}
 		}
 		AbilitySystem->InitAbilityActorInfo(this, this);
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("This is an on screen message!"));
